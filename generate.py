@@ -4,310 +4,242 @@ import requests
 import sys
 import subprocess
 
+# if True, no requests to the server will be done
 generate_empty = True
+
+# if generate_empty: the list of events that will be generated
+empty_events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+
+# id of the main event
 main_event_id = '333'
-reponse = {}
-if not generate_empty :
-    comp_name = 'SeraingOpen2021'
-    response = requests.get('https://www.worldcubeassociation.org/api/v0/competitions/'+ comp_name +'/wcif/public').json()
 
-events_data = [
-('333', '3x3x3 Cube', 10, 'time', '3x3x3 Cube'),
-('222', '2x2x2 Cube', 20, 'time', '2x2x2 Cube'),
-('444', '4x4x4 Cube', 30, 'time', '4x4x4 Cube'),
-('555', '5x5x5 Cube', 40, 'time', '5x5x5 Cube'),
-('666', '6x6x6 Cube', 50, 'time', '6x6x6 Cube'),
-('777', '7x7x7 Cube', 60, 'time', '7x7x7 Cube'),
-('333bf', '3x3x3 Blindfolded', 70, 'time', '3x3x3 Blindfolded'),
-('333fm', '3x3x3 Fewest Moves', 80, 'number', '3x3x3 Fewest Moves'),
-('333oh', '3x3x3 One-Handed', 90, 'time', '3x3x3 One-Handed'),
-('clock', 'Clock', 110, 'time', 'Clock'),
-('minx', 'Megaminx', 120, 'time', 'Megaminx'),
-('pyram', 'Pyraminx', 130, 'time', 'Pyraminx'),
-('skewb', 'Skewb', 140, 'time', 'Skewb'),
-('sq1', 'Square-1', 150, 'time', 'Square-1'),
-('444bf', '4x4x4 Blindfolded', 160, 'time', '4x4x4 Blindfolded'),
-('555bf', '5x5x5 Blindfolded', 170, 'time', '5x5x5 Blindfolded'),
-('333mbf', '3x3x3 Multi-Blind', 180, 'multi', '3x3x3 Multi-Blind')]
+# if not generate_empty: name of the competition in the url 
+comp_name = 'SeraingOpen2021'
 
-empty_events = ['333', '222', '444', '555', '666', '777','333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+FUNNY_NAMES_MEDALS = ('Sunny Gold', 'Moony Silver', 'Marsy Bronze')
+COLORS_MEDALS = ('ffe858', 'cccccc', 'd45500')    
+COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
 
-def find_name_person(person_id) :
-    for person in response['persons'] :
-        if person['registrantId'] == person_id :
-            return person['name']
-    raise ValueError("Not found person id : " + str(person_id))
+# script
+from collections import namedtuple
+EventData = namedtuple("EventData", "id name number method_of_ranking name2")
 
-def find_name_event(event_id) :
-    for event in events_data :
-        if event[0] == event_id :
-            return event[1]
-    raise ValueError("Not found event id : " + str(event_id))
+EVENTS_DATA = [
+    EventData('333', '3x3x3 Cube', 10, 'time', '3x3x3 Cube'),
+    EventData('222', '2x2x2 Cube', 20, 'time', '2x2x2 Cube'),
+    EventData('444', '4x4x4 Cube', 30, 'time', '4x4x4 Cube'),
+    EventData('555', '5x5x5 Cube', 40, 'time', '5x5x5 Cube'),
+    EventData('666', '6x6x6 Cube', 50, 'time', '6x6x6 Cube'),
+    EventData('777', '7x7x7 Cube', 60, 'time', '7x7x7 Cube'),
+    EventData('333bf', '3x3x3 Blindfolded', 70, 'time', '3x3x3 Blindfolded'),
+    EventData('333fm', '3x3x3 Fewest Moves', 80, 'number', '3x3x3 Fewest Moves'),
+    EventData('333oh', '3x3x3 One-Handed', 90, 'time', '3x3x3 One-Handed'),
+    EventData('clock', 'Clock', 110, 'time', 'Clock'),
+    EventData('minx', 'Megaminx', 120, 'time', 'Megaminx'),
+    EventData('pyram', 'Pyraminx', 130, 'time', 'Pyraminx'),
+    EventData('skewb', 'Skewb', 140, 'time', 'Skewb'),
+    EventData('sq1', 'Square-1', 150, 'time', 'Square-1'),
+    EventData('444bf', '4x4x4 Blindfolded', 160, 'time', '4x4x4 Blindfolded'),
+    EventData('555bf', '5x5x5 Blindfolded', 170, 'time', '5x5x5 Blindfolded'),
+    EventData('333mbf', '3x3x3 Multi-Blind', 180, 'multi', '3x3x3 Multi-Blind')]
 
-def format_time(time) :
+MEDAL_DATA = list(zip(
+    (1, 2, 3),
+    ('Gold', 'Silver', 'Bronze'),
+    FUNNY_NAMES_MEDALS,
+    COLORS_MEDALS,
+    COLORS_MEDALS_TEXT,
+    ('First', 'Second', 'Third')))    
+
+# general functions
+def format_time(time):
+    """
+    7225 -> "1:12.25"
+    """
     secs = time/100
-    if secs < 60 :
+    if secs < 60:
         return f'{secs:.2f}'
-    else :
-        mins = int(secs//60)
-        secs = secs%60
+    else:
+        mins = int(secs // 60)
+        secs = secs % 60
         return f'{mins}:{secs:05.2f}'
+
+# functions that reads "response"
+def find_name_person(person_id):
+    for person in response['persons']:
+        if person['registrantId'] == person_id:
+            return person['name']
+    raise ValueError(f"Not found person id: {person_id}")
+
+def find_name_event(event_id):
+    for event in EVENTS_DATA:
+        if event[0] == event_id:
+            return event[1]
+    raise ValueError(f"Not found event id: {event_id}")
+
+def get_main_event():
+    for event in response['events']:
+        if event['id'] == main_event_id:
+            return event
+    raise ValueError(f"No main event found: {main_event_id}")
+
+# svg modification functions
+def remove_layer(tree, name):
+    layers = [
+        x for x in tree.getroot().findall('./')
+        if name == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}label')]
     
+    if len(layers) == 0:
+        raise ValueError(f"Layer {name!r} not found")
+    if len(layers) > 1:
+        raise ValueError(f"Layer {name!r} is duplicate, please rename")
     
+    layer = layers[0]
+    layer.attrib['style'] = 'display:none'
 
-# for event in response['events'] :
-    # print(find_name_event(event['id']))
-    # last_round = event['rounds'][-1]
-    # for i,podium in enumerate(last_round['results'][:3]) :
-        # print("Position", i+1)
-        # print(find_name_person(podium['personId']))
-        # print("Best", podium['best']/100)
-        # print("Average", podium['average']/100)
-        # print()
+# functions related to a event(dict)
+def get_main_averages(event:dict, personId):
+    return sorted(
+        result['average']
+        for round in event['rounds']
+        for result in round['results']
+        if result['personId'] == personId
+        if result['average'] > 0)
+
+def compute_name_score_for_event(event:dict):
+    if len(event['rounds']) > 0:
+        last_round = event['rounds'][-1]
+        if len(last_round['results']) >= n:
+            podium = last_round['results'][n-1]
+            name = find_name_person(podium['personId'])
+            score = format_time(podium['best'] if 'bf' in event['id'] else podium['average'])
+            return name, score
+    raise ValueError("Unknown score for event")
+
+def find_metric_for_event(event_id:str):
+    return (
+        'with a score of' if 'fm' in event_id else
+        'with a score of' if 'mbf' in event_id else
+        'with a time of' if 'bf' in event_id else
+        'with an average time of')
+
+def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, newcomerinfo:list=None, diploma_type:'event empty youngest newcomer'):
+    for n, m, mv, c, ctext, place in MEDAL_DATA:
+        if generate_empty or diploma_type == 'empty' or diploma_type == 'youngest':
+            name, score = '', ''
+        elif diploma_type == 'newcomer':
+            name, score = newcomerinfo[n-1][0], format_time(newcomerinfo[n-1][1])
+        elif diploma_type == 'event':
+            try:
+                name, score = compute_name_score_for_event(event)
+            except ValueError:
+                name, score = '', ''
+        
+        metric = find_metric_for_event(event_id)
+        
+        compet = ("Rubik's Cube" if diploma_type == 'newcomer' else
+                  "Rubik's Cube" if diploma_type == 'youngest' else
+                  find_name_event(event_id))
+        
+        s2 = (s
+            .replace('ffe858', c)
+            .replace('{place}', place)
+            .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(ctext, mv))
+            .replace('{compet}', compet)
+            .replace('{compet_metric}', metric)
+            .replace('{name}', name)
+            .replace('{result}', score)
+            .replace('{as_a}', '')
+        )
+            
+        t = xmltree.ElementTree(xmltree.fromstring(s2))
+        
+        remove_layer(t, 'Gold') if not m == 'Gold' else None
+        remove_layer(t, 'Silver') if not m == 'Silver' else None
+        remove_layer(t, 'Bronze') if not m == 'Bronze' else None
+        
+        remove_layer(t, 'Rayons') if m != 'Gold' else None
+        
+        remove_layer(t, 'Young text') if diploma_type != 'youngest' else None
+        remove_layer(t, 'Below text') if diploma_type == 'youngest' else None
+        
+        diploma_name = ('youngest' if diploma_type == 'youngest' else
+                        'newcomer' if diploma_type == 'newcomer' else
+                        event_id)
+        
+        file_name = 'files/event-{:02}-{}-{}'.format(diploma_number + 1, n, diploma_name)
+        t.write(file_name + '.svg', encoding="utf-8")
+        
+        # call inkscape --export-type=pdf "$f"
+        #subprocess.check_output(["inkscape", "--export-type=pdf", file_name + '.svg'])
+        subprocess.check_output(["inkscape", f"--file={file_name}.svg", "--without-gui", f"--export-pdf={file_name}.pdf"])
+        
+        print(f"{file_name!r} generated")
 
 
-#sys.exit()
+# functions that generate pdfs
+def generate_svg_for_event(nevent:int, event:dict):
+    generate_diploma(diploma_number=nevent,
+                     event_id=event['id'],
+                     event=event,
+                     diploma_type='event')
 
-def remove_layer(t, name):
-    l = next(
-        x for x in t.getroot().findall('./')
-        if name == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}label'))
+def generate_svg_for_empty_event(nevent, event_id:str):
+    generate_diploma(diploma_number=nevent,
+                     event_id=event_id,
+                     diploma_type='empty')
+        
+def generate_svg_for_newcomers(nevent):
+    generate_diploma(diploma_number=nevent,
+                     event_id='333',
+                     diploma_type='newcomer',
+                     newcomerinfo=get_newcomers_info())
+
+def generate_svg_for_youngest(nevent):
+    generate_diploma(diploma_number=nevent,
+                     event_id='333',
+                     diploma_type='youngest')
+
+# functions for newcomers
+def get_newcomers_info():
+    if generate_empty:
+        return []
     
-    l.attrib['style'] = 'display:none'
+    newcomers = []
+    for person in response['persons']:
+        if person['wcaId'] is None:
+            averages = get_main_averages(get_main_event(), person['registrantId'])
+            if len(averages) != 0:
+                newcomers.append((person['name'], averages[0]))
+    newcomers.sort(key=lambda y: y[1])
+    return newcomers
 
+# script
+if not generate_empty:
+    response = requests.get(f'https://www.worldcubeassociation.org/api/v0/competitions/{comp_name}/wcif/public').json()
+    
 with open('drawing.svg',encoding="UTF-8") as f:
     s = f.read()
 
-# events = [
-    # "3×3×3 Rubik's cube",
-    # "2×2×2 Rubik's cube",
-    # "4×4×4 Rubik's cube",
-    # "5×5×5 Rubik's cube",
-    # "6×6×6 Rubik's cube",
-    # "7×7×7 Rubik's cube",
-    # '3×3×3 Blindfolded',
-    # '3×3×3 One-Handed',
-    # 'Megaminx',
-    # 'Pyraminx',
-    # 'Skewb',
-    # 'Square-1',
-    # "Newcomer Rubik's Cube",
-    # 'Youngest participant']
+import os
+if not os.path.isdir('files'):
+    os.mkdir('files')
 
-def get_main_event() :
-    for event in response['events']:
-        if event['id'] == main_event_id :
-            return event
-        raise ValueError("No main event found : " + str(main_event_id))
-
-def get_main_averages(event, personId) :
-    averages = []
-    for round in event['rounds'] :
-        for result in round['results'] :
-            if result['personId'] == personId and result['average'] > 0 :
-                averages.append(result['average'])
-
-    averages.sort()
-    return averages
-
-def generate_for_newcomers(nevent) :
-    newcomers = []
-    if not generate_empty :
-        for person in response['persons'] :
-            if person['wcaId'] is None : # or person['wcaId'].startswith('2021'):
-                id = person['registrantId']
-                name = person['name']
-                averages = get_main_averages(get_main_event(), id)
-                if len(averages) != 0 :
-                    newcomers.append((name, averages[0]))
-        newcomers.sort(key=lambda y: y[1])
-    generate_svg_for_newcomers(nevent, newcomers)
-
-def generate_svg_for_event(nevent, event) :
-    for n, m, mv, c, ctext, place in [
-        (1, 'Gold', 'Sunny Gold', 'ffe858', 'ffcd08', 'First'),
-        (2, 'Silver', 'Moony Silver', 'cccccc', 'cccccc', 'Second'),
-        (3, 'Bronze', 'Marsy Bronze', 'd45500', 'd45500', 'Third')]: # cd5700 cd7f3f
-    
-        name = ''
-        score = ''
-        if len(event['rounds']) > 0 :
-            last_round = event['rounds'][-1]
-            if len(last_round['results']) >= n :
-                podium = last_round['results'][n-1]
-                name = find_name_person(podium['personId'])
-                score = format_time(podium['best'] if 'bf' in event['id'] else podium['average'])
-
-        metric = (
-            'with a score of' if 'fm' in event or 'mbf' in event else
-            'with a time of' if 'bf' in event['id'] else
-            'with an average time of')
-        
-        s2 = (s
-            .replace('ffe858', c)
-            .replace('{place}', place)
-            .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(ctext,mv))
-            .replace('{compet}', "Rubik's Cube" if event['id'] == "Newcomer Rubik's Cube" else find_name_event(event['id']))
-            .replace('{compet_metric}', metric)
-            .replace('{name}', name)
-            .replace('{result}', score)
-            .replace('{as_a}', 'as a newcomer ' if event['id'] == "Newcomer Rubik's Cube" else '')
-        )
-        t = xmltree.ElementTree(xmltree.fromstring(s2))
-        
-        remove_layer(t, 'Gold') if not m == 'Gold' else None
-        remove_layer(t, 'Silver') if not m == 'Silver' else None
-        remove_layer(t, 'Bronze') if not m == 'Bronze' else None
-        
-        if m != 'Gold':
-            remove_layer(t, 'Rayons')
-        if event != 'Youngest participant':
-            remove_layer(t, 'Young text')
-        else:
-            remove_layer(t, 'Below text')
-        file_name = 'event-{:02}-{}-{}.svg'.format(1+nevent, n, event['id'])
-        t.write(file_name,encoding="UTF-8")
-        # call inkscape --export-type=pdf "$f"
-        subprocess.check_output(["inkscape", "--export-type=pdf", file_name])
-        print(file_name)
-
-def generate_svg_for_empty_event(nevent, event) :
-    for n, m, mv, c, ctext, place in [
-        (1, 'Gold', 'Sunny Gold', 'ffe858', 'ffcd08', 'First'),
-        (2, 'Silver', 'Moony Silver', 'cccccc', 'cccccc', 'Second'),
-        (3, 'Bronze', 'Marsy Bronze', 'd45500', 'd45500', 'Third')]: # cd5700 cd7f3f
-    
-        name = ''
-        score = ''
-
-        metric = (
-            'with a score of' if 'fm' in event or 'mbf' in event else
-            'with a time of' if 'bf' in event else
-            'with an average time of')
-        
-        s2 = (s
-            .replace('ffe858', c)
-            .replace('{place}', place)
-            .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(ctext,mv))
-            .replace('{compet}', find_name_event(event))
-            .replace('{compet_metric}', metric)
-            .replace('{name}', name)
-            .replace('{result}', score)
-            .replace('{as_a}', '')
-        )
-        t = xmltree.ElementTree(xmltree.fromstring(s2))
-        
-        remove_layer(t, 'Gold') if not m == 'Gold' else None
-        remove_layer(t, 'Silver') if not m == 'Silver' else None
-        remove_layer(t, 'Bronze') if not m == 'Bronze' else None
-        
-        if m != 'Gold':
-            remove_layer(t, 'Rayons')
-        remove_layer(t, 'Young text')
-        file_name = 'event-{:02}-{}-{}.svg'.format(1+nevent, n, event)
-        t.write(file_name,encoding="UTF-8")
-        # call inkscape --export-type=pdf "$f"
-        subprocess.check_output(["inkscape", "--export-type=pdf", file_name])
-        print(file_name)
-
-
-def generate_svg_for_newcomers(nevent, info) :
-    for n, m, mv, c, place in [
-        (1, 'Gold', 'Sunny Gold', 'ffe858', 'First'),
-        (2, 'Silver', 'Moony Silver', 'cccccc', 'Second'),
-        (3, 'Bronze', 'Marsy Bronze', 'd45500', 'Third')]: # cd5700 cd7f3f
-        
-        if generate_empty or len(info) < n :
-            name = ''
-            score = ''
-        else :
-            name = info[n-1][0]
-            score = format_time(info[n-1][1])
-
-        metric = 'with an average time of'
-        
-        s2 = (s
-            .replace('ffe858', c)
-            .replace('{place}', place)
-            .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(c,mv))
-            .replace('{compet}', "Rubik's Cube")
-            .replace('{compet_metric}', metric)
-            .replace('{name}', name)
-            .replace('{result}', score)
-            .replace('{as_a}', 'as a newcomer ')
-        )
-        t = xmltree.ElementTree(xmltree.fromstring(s2))
-        
-        remove_layer(t, 'Gold') if not m == 'Gold' else None
-        remove_layer(t, 'Silver') if not m == 'Silver' else None
-        remove_layer(t, 'Bronze') if not m == 'Bronze' else None
-        
-        if m != 'Gold':
-            remove_layer(t, 'Rayons')
-    
-        remove_layer(t, 'Young text')
-  
-        file_name = 'event-{:02}-{}-{}.svg'.format(1+nevent, n, "Newcomer Rubik's Cube")
-        t.write(file_name,encoding="UTF-8")
-        # call inkscape --export-type=pdf "$f"
-        subprocess.check_output(["inkscape", "--export-type=pdf", file_name])
-        print(file_name)
-
-def generate_svg_for_youngest(nevent) :
-    for n, m, mv, c, place in [
-        (1, 'Gold', 'Sunny Gold', 'ffe858', 'First'),
-        (2, 'Silver', 'Moony Silver', 'cccccc', 'Second'),
-        (3, 'Bronze', 'Marsy Bronze', 'd45500', 'Third')]: # cd5700 cd7f3f
-        
-
-        name = ''
-        score = ''
-
-        metric = 'with an average time of'
-        
-        s2 = (s
-            .replace('ffe858', c)
-            .replace('{place}', place)
-            .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(c,mv))
-            .replace('{compet}', "Rubik's Cube")
-            .replace('{compet_metric}', metric)
-            .replace('{name}', name)
-            .replace('{result}', score)
-            .replace('{as_a}', '')
-        )
-        t = xmltree.ElementTree(xmltree.fromstring(s2))
-        
-        remove_layer(t, 'Gold') if not m == 'Gold' else None
-        remove_layer(t, 'Silver') if not m == 'Silver' else None
-        remove_layer(t, 'Bronze') if not m == 'Bronze' else None
-        
-        if m != 'Gold':
-            remove_layer(t, 'Rayons')
-    
-        remove_layer(t, 'Below text')
-  
-        file_name = 'event-{:02}-{}-{}.svg'.format(1+nevent, n, 'Youngest participant')
-        t.write(file_name,encoding="UTF-8")
-        # call inkscape --export-type=pdf "$f"
-        subprocess.check_output(["inkscape", "--export-type=pdf", file_name])
-        print(file_name)
-
-if generate_empty :
+if generate_empty:
     for nevent, event in enumerate(empty_events):
         generate_svg_for_empty_event(nevent, event)
-else :
+else:
     for nevent, event in enumerate(response['events']):
         generate_svg_for_event(nevent, event)
 
-more_events_id = len(empty_events)
-if not generate_empty :
+if generate_empty:
+    more_events_id = len(empty_events)
+else:
     more_events_id = len(response['events'])
 
-#generate_for_newcomers(more_events_id)
-#more_events_id += 1
-#generate_svg_for_youngest(more_events_id)
+generate_svg_for_newcomers(more_events_id)
+generate_svg_for_youngest(more_events_id + 1)
 
 #call pdf merger
-subprocess.check_output(["pdftk", "event*.pdf", "cat", "output", "all-events.pdf"])
-    
-
+import glob
+subprocess.check_output(["pdftk", *glob.glob("files/event*.pdf"), "cat", "output", "all-events.pdf"])
