@@ -141,6 +141,8 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
                   "Rubik's Cube" if diploma_type == 'youngest' else
                   find_name_event(event_id))
         
+        as_a = 'as a newcomer ' if diploma_type == 'newcomer' else ''
+        
         s2 = (s
             .replace('ffe858', c)
             .replace('{place}', place)
@@ -149,7 +151,7 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
             .replace('{compet_metric}', metric)
             .replace('{name}', name)
             .replace('{result}', score)
-            .replace('{as_a}', '')
+            .replace('{as_a}', as_a)
         )
             
         t = xmltree.ElementTree(xmltree.fromstring(s2))
@@ -242,4 +244,6 @@ generate_svg_for_youngest(more_events_id + 1)
 
 #call pdf merger
 import glob
-subprocess.check_output(["pdftk", *glob.glob("files/event*.pdf"), "cat", "output", "all-events.pdf"])
+#subprocess.check_output(["pdftk", "files/event*.pdf", "cat", "output", "all-events.pdf"])
+subprocess.check_output(["pdftk", *sorted(glob.glob("files/event*.pdf")), "cat", "output", "all-events.pdf"])
+print("'all-events.pdf' generated")
