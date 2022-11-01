@@ -5,12 +5,12 @@ import sys
 import subprocess
 
 # if True, no requests to the server will be done
-generate_empty = True
+generate_empty = False
 
 # if generate_empty: the list of events that will be generated
 empty_events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
 
-# id of the main event
+# id of the main event (used for newcomer)
 main_event_id = '333'
 
 # if not generate_empty: name of the competition in the url 
@@ -106,7 +106,7 @@ def get_main_averages(event:dict, personId):
         if result['personId'] == personId
         if result['average'] > 0)
 
-def compute_name_score_for_event(event:dict):
+def compute_name_score_for_event(event:dict, n:int):
     if len(event['rounds']) > 0:
         last_round = event['rounds'][-1]
         if len(last_round['results']) >= n:
@@ -128,10 +128,14 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         if generate_empty or diploma_type == 'empty' or diploma_type == 'youngest':
             name, score = '', ''
         elif diploma_type == 'newcomer':
-            name, score = newcomerinfo[n-1][0], format_time(newcomerinfo[n-1][1])
+            try:
+                name, score = newcomerinfo[n-1][0], format_time(newcomerinfo[n-1][1])
+            except IndexError:
+                print(f"Warning: newcomer number {n} cannot be found")
+                name, score = '', ''
         elif diploma_type == 'event':
             try:
-                name, score = compute_name_score_for_event(event)
+                name, score = compute_name_score_for_event(event, n)
             except ValueError:
                 name, score = '', ''
         
@@ -218,7 +222,9 @@ def get_newcomers_info():
 
 # script
 if not generate_empty:
+    print("Fetching data from wca...")
     response = requests.get(f'https://www.worldcubeassociation.org/api/v0/competitions/{comp_name}/wcif/public').json()
+    print("Done !")
     
 with open('drawing.svg',encoding="UTF-8") as f:
     s = f.read()
