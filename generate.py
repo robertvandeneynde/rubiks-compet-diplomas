@@ -32,9 +32,9 @@ events = [
 
 for nevent, event in enumerate(events):
   for n, m, mv, c, place in [
-        (1, 'Gold', 'Shiny Gold', 'ffe858', 'First'),
-        (2, 'Silver', 'Honorable Silver', 'cccccc', 'Second'),
-        (3, 'Bronze', 'Chocolaty Bronze', 'cd5700', 'Third')]: # cd7f3f
+        (1, 'Gold', 'Sunny Gold', 'ffe858', 'First'),
+        (2, 'Silver', 'Moony Silver', 'cccccc', 'Second'),
+        (3, 'Bronze', 'Marsy Bronze', 'd45500', 'Third')]: # cd5700 cd7f3f
     
     metric = (
         'with a score of' if '3×3×3 Fewest Moves Count' in event or 'Multi-Blindfolded' in event else
@@ -50,6 +50,11 @@ for nevent, event in enumerate(events):
         .replace('{as_a}', 'as a newcomer ' if event == "Newcomer Rubik's Cube" else '')
     )
     t = xmltree.ElementTree(xmltree.fromstring(s2))
+    
+    remove_layer(t, 'Gold') if not m == 'Gold' else None
+    remove_layer(t, 'Silver') if not m == 'Silver' else None
+    remove_layer(t, 'Bronze') if not m == 'Bronze' else None
+    
     if m != 'Gold':
         remove_layer(t, 'Rayons')
     if event != 'Youngest participant':
