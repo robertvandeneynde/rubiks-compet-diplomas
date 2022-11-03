@@ -128,6 +128,7 @@ def find_metric_for_event(event_id:str):
         'with an average time of')
 
 def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, newcomerinfo:list=None, diploma_type:'event empty youngest newcomer'):
+    files_generated = []
     for n, m, mv, c, ctext, place in MEDAL_DATA:
         if not fill_names or diploma_type == 'empty' or diploma_type == 'youngest':
             name, score = '', ''
@@ -185,30 +186,33 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         subprocess.check_output(["inkscape", f"--file={file_name}.svg", "--without-gui", f"--export-pdf={file_name}.pdf"])
         
         print(f"{file_name!r} generated")
+        
+        files_generated += [file_name + '.svg', file_name + '.pdf']
+    return files_generated
 
 
 # functions that generate pdfs
 def generate_svg_for_event(nevent:int, event:dict):
-    generate_diploma(diploma_number=nevent,
-                     event_id=event['id'],
-                     event=event,
-                     diploma_type='event')
+    return generate_diploma(diploma_number=nevent,
+                            event_id=event['id'],
+                            event=event,
+                            diploma_type='event')
 
 def generate_svg_for_empty_event(nevent, event_id:str):
-    generate_diploma(diploma_number=nevent,
-                     event_id=event_id,
-                     diploma_type='empty')
+    return generate_diploma(diploma_number=nevent,
+                            event_id=event_id,
+                            diploma_type='empty')
         
 def generate_svg_for_newcomers(nevent):
-    generate_diploma(diploma_number=nevent,
-                     event_id='333',
-                     diploma_type='newcomer',
-                     newcomerinfo=get_newcomers_info())
+    return generate_diploma(diploma_number=nevent,
+                            event_id='333',
+                            diploma_type='newcomer',
+                            newcomerinfo=get_newcomers_info())
 
 def generate_svg_for_youngest(nevent):
-    generate_diploma(diploma_number=nevent,
-                     event_id='333',
-                     diploma_type='youngest')
+    return generate_diploma(diploma_number=nevent,
+                            event_id='333',
+                            diploma_type='youngest')
 
 # functions for newcomers
 def get_newcomers_info():
@@ -226,7 +230,7 @@ def get_newcomers_info():
 
 # script
 if comp_name:
-    print("Fetching data from wca...")
+    print("Fetching data from wca for competition {comp_name!r}...")
     response = requests.get(f'https://www.worldcubeassociation.org/api/v0/competitions/{comp_name}/wcif/public').json()
     print("Done !")
     
@@ -237,12 +241,13 @@ import os
 if not os.path.isdir('files'):
     os.mkdir('files')
 
+file_generated = []
 if comp_name:
     for nevent, event in enumerate(response['events']):
-        generate_svg_for_event(nevent, event)
+        file_generated += generate_svg_for_event(nevent, event)
 else:
     for nevent, event_id in enumerate(events):
-        generate_svg_for_empty_event(nevent, event_id)
+        file_generated += generate_svg_for_empty_event(nevent, event_id)
 
 more_events_id = (len(response['events']) if comp_name else
                   len(events))
@@ -251,7 +256,9 @@ generate_svg_for_newcomers(more_events_id)
 generate_svg_for_youngest(more_events_id + 1)
 
 #call pdf merger
-import glob
+#import glob
 #subprocess.check_output(["pdftk", "files/event*.pdf", "cat", "output", "all-events.pdf"])
-subprocess.check_output(["pdftk", *sorted(glob.glob("files/event*.pdf")), "cat", "output", "all-events.pdf"])
+#subprocess.check_output(["pdftk", *sorted(glob.glob("files/event*.pdf")), "cat", "output", "all-events.pdf"])
+is_pdf = lambda filename: filename.endswith(".pdf")
+subprocess.check_output(["pdftk", *sorted(filter(is_pdf, files_generated)), "cat", "output", "all-events.pdf"])
 print("'all-events.pdf' generated")
