@@ -72,7 +72,7 @@ def format_time(time):
         return f'{total_secs:.2f}'
     else:
         mins, secs = divmod(total_secs, 60)
-        return f'{int(mins)}:{secs:05.2f}'
+        return f'{mins:.0f}:{secs:05.2f}'
 
 def format_fmc(number):
     return str(number)
@@ -81,10 +81,12 @@ def format_multi(multi):
     """
     https://www.worldcubeassociation.org/results/misc/export.html
     """
-    s = str(multi)
-    if not len(s) == len('DDTTTTTMM'):
-        raise ValueError(f"Wrong or old multi format: {multi}")
-    DD, TTTTT, MM = map(int, (s[0:2], s[2:2+5], s[2+5:2+5+2]))
+    s = str(multi).zfill(len('0DDTTTTTMM'))
+    if s.startswith('1'):
+        raise ValueError(f"Old multi format: {multi}")
+    if not s.startswith('0'):
+        raise ValueError(f"Wrong multi format: {multi}")
+    DD, TTTTT, MM = map(int, (s[1:1+2], s[1+2:1+2+5], s[1+2+5:1+2+5+2]))
     
     difference = 99 - DD
     timeInSeconds = TTTTT
