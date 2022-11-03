@@ -62,9 +62,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="762.61466"
-     inkscape:cy="633.56768"
+     inkscape:zoom="1"
+     inkscape:cx="749.49998"
+     inkscape:cy="622.99998"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -517,9 +517,9 @@
    style="font-style:normal;font-weight:normal;font-size:26.8952px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect2671);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
      x="675"
      y="384.07956"
-     id="tspan446"><tspan
+     id="tspan447"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan444">{name}</tspan></tspan></text>
+       id="tspan445">{name}</tspan></tspan></text>
 
 
 <text
@@ -528,12 +528,12 @@
    xml:space="preserve"
    id="text2669-3"
    style="font-style:normal;font-weight:normal;font-size:8.53923px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect2671);display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.3175"
-   transform="translate(-455.65231,-150.65759)"><tspan
+   transform="translate(-454.38231,-157.00759)"><tspan
      x="675"
      y="366.96277"
-     id="tspan450"><tspan
+     id="tspan451"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan448">{result}</tspan></tspan></text>
+       id="tspan449">{result}</tspan></tspan></text>
 
 </g><g
      inkscape:groupmode="layer"
@@ -586,30 +586,30 @@
      inkscape:groupmode="layer"
      style="display:inline"><text
    id="text2646"
-   y="155.03909"
-   x="199.16675"
+   y="152.49911"
+   x="173.76697"
    style="font-style:normal;font-weight:normal;font-size:8.53922px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
    xml:space="preserve"><tspan
      id="tspan2644"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
-     y="155.03909"
-     x="199.16675"
+     y="152.49911"
+     x="173.76697"
      sodipodi:role="line">Is the <tspan
    id="tspan2650"
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px">Youngest competitor</tspan></tspan><tspan
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
-     y="169.98273"
-     x="199.16675"
+     y="167.44275"
+     x="173.76697"
      sodipodi:role="line"
      id="tspan2674">of the competition</tspan><tspan
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
-     y="184.92636"
-     x="199.16675"
+     y="182.38638"
+     x="173.76697"
      sodipodi:role="line"
      id="tspan2678">who solved the Rubik's Cube</tspan><tspan
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
-     y="199.87"
-     x="199.16675"
+     y="197.33002"
+     x="173.76697"
      sodipodi:role="line"
      id="tspan2672">in a time of</tspan></text>
 
