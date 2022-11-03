@@ -8,7 +8,7 @@ import subprocess
 fill_names = True
 
 # if set: name of the competition in the url 
-comp_name = 'BelgianNationals2022' # 'SeraingOpen2021'
+comp_name = "GanshorenSundayOpen2022" # 'BelgianNationals2022' # 'SeraingOpen2021'
 
 # if set: the list of events that will be generated
 # if not set or 'all': all the events of 'comp_name' will be used
@@ -75,6 +75,30 @@ def format_time(time):
         secs = secs % 60
         return f'{mins}:{secs:05.2f}'
 
+def format_fmc(number):
+    return str(number)
+
+def format_multi(multi):
+    """
+    https://www.worldcubeassociation.org/results/misc/export.html
+    """
+    s = str(multi)
+    if not len(s) == len('DDTTTTTMM'):
+        raise ValueError(f"Wrong or old multi format: {multi}")
+    DD, TTTTT, MM = map(int, (s[0:2], s[2:2+5], s[2+5:2+5+2]))
+    
+    difference = 99 - DD
+    timeInSeconds = TTTTT
+    
+    if timeInSeconds == 99999:
+        raise ValueError("Unknown result")
+    
+    missed = MM
+    solved = difference + missed
+    attempted = solved + missed
+    
+    return "{}/{} {}".format(solved, attempted, format_time(timeInSeconds * 100))
+
 # functions that reads "response"
 def find_name_person(person_id):
     for person in response['persons']:
@@ -123,7 +147,8 @@ def compute_name_score_for_event(event:dict, n:int):
         if len(last_round['results']) >= n:
             podium = last_round['results'][n-1]
             name = find_name_person(podium['personId'])
-            score = (str(int(podium['best'])) if 'fm' in event['id'] else
+            score = (format_fmc(podium['best']) if 'fm' in event['id'] else
+                     format_multi(podium['best']) if 'mbf' in event['id'] else
                      format_time(podium['best']) if 'bf' in event['id'] else
                      format_time(podium['average']))
             return name, score
@@ -150,7 +175,8 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         elif diploma_type == 'event':
             try:
                 name, score = compute_name_score_for_event(event, n)
-            except ValueError:
+            except ValueError as e:
+                print(f"Warning: {e}")
                 name, score = '', ''
         
         metric = find_metric_for_event(event_id)
