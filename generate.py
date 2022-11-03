@@ -12,7 +12,8 @@ comp_name = 'BelgianNationals2022' # 'SeraingOpen2021'
 
 # if set: the list of events that will be generated
 # if not set or 'all': all the events of 'comp_name' will be used
-events = None # ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+#events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+events = 'all'
 
 # id of the main event (used for newcomer)
 main_event_id = '333'
@@ -248,7 +249,7 @@ if comp_name:
     
     if event_ids:
         if not set(event_ids) <= set(comp_event_ids):
-            raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(event_ids)))
+            raise Exception('Those events do not exist in the competition: {}'.format(set(event_ids) - set(comp_event_ids)))
 else:
     if events == 'all' or not events:
         raise Exception("When 'comp_name' is not set, 'events' must be set")
