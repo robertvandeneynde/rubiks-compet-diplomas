@@ -175,7 +175,7 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         remove_layer(tree, 'Silver') if not m == 'Silver' else None
         remove_layer(tree, 'Bronze') if not m == 'Bronze' else None
         
-        remove_layer(tree, 'Rayons') if m != 'Gold' else None
+        remove_layer(tree, 'Rays') if m != 'Gold' else None
         
         remove_layer(tree, 'Young text') if diploma_type != 'youngest' else None
         remove_layer(tree, 'Below text') if diploma_type == 'youngest' else None
@@ -242,18 +242,18 @@ if comp_name:
     comp_event_ids = [event['id'] for event in response['events']]
 
     if events == 'all' or not events:
-        events_id = comp_event_ids
+        event_ids = comp_event_ids
     else:
-        events_id = events
+        event_ids = events
     
-    if events_id:
-        if not set(events_id) <= set(comp_event_ids):
-            raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(events_id)))
+    if event_ids:
+        if not set(event_ids) <= set(comp_event_ids):
+            raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(event_ids)))
 else:
     if events == 'all' or not events:
         raise Exception("When 'comp_name' is not set, 'events' must be set")
     else:
-        events_id = events
+        event_ids = events
     
 with open(template_file, encoding="UTF-8") as f:
     svg_string = f.read()
@@ -269,14 +269,14 @@ if comp_name:
     for nevent, event in enumerate(events_list):
         files_generated += generate_svg_for_event(nevent, event)
 else:
-    for nevent, event_id in enumerate(events_ids):
+    for nevent, event_id in enumerate(event_idss):
         files_generated += generate_svg_for_empty_event(nevent, event_id)
 
-more_events_id = (len(response['events']) if comp_name else
+more_event_ids = (len(response['events']) if comp_name else
                   len(events))
 
-files_generated += generate_svg_for_newcomers(more_events_id)
-files_generated += generate_svg_for_youngest(more_events_id + 1)
+files_generated += generate_svg_for_newcomers(more_event_ids)
+files_generated += generate_svg_for_youngest(more_event_ids + 1)
 
 #call pdf merger
 #import glob
