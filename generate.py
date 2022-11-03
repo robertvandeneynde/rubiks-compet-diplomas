@@ -67,13 +67,12 @@ def format_time(time):
     """
     7225 -> "1:12.25"
     """
-    secs = time/100
-    if secs < 60:
-        return f'{secs:.2f}'
+    total_secs = time / 100
+    if total_secs < 60:
+        return f'{total_secs:.2f}'
     else:
-        mins = int(secs // 60)
-        secs = secs % 60
-        return f'{mins}:{secs:05.2f}'
+        mins, secs = divmod(total_secs, 60)
+        return f'{int(mins)}:{secs:05.2f}'
 
 def format_fmc(number):
     return str(number)
