@@ -22,6 +22,9 @@ FUNNY_NAMES_MEDALS = ('Sunny Gold', 'Moony Silver', 'Marsy Bronze')
 COLORS_MEDALS = ('ffe858', 'cccccc', 'd45500')    
 COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
 
+# Color in the template that will be replaced by value in COLORS_MEDALS
+COLOR_VARYING = 'ffe858'
+
 template_file = 'drawing.svg'
 output_file = 'all-events.pdf'
 
@@ -191,7 +194,7 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         as_a = 'as a newcomer ' if diploma_type == 'newcomer' else ''
         
         new_svg_string = (svg_string
-            .replace('ffe858', c)
+            .replace(COLOR_VARYING, c)
             .replace('{place}', place)
             .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(ctext, mv))
             .replace('{compet}', compet)
