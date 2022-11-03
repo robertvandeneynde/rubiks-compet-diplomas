@@ -21,6 +21,8 @@ FUNNY_NAMES_MEDALS = ('Sunny Gold', 'Moony Silver', 'Marsy Bronze')
 COLORS_MEDALS = ('ffe858', 'cccccc', 'd45500')    
 COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
 
+output_file = 'all-events.pdf'
+
 # check
 if fill_names and not comp_name:
     raise Exception("'comp_name' must be set when 'fill_names == True'")
@@ -275,8 +277,8 @@ files_generated += generate_svg_for_youngest(more_events_id + 1)
 
 #call pdf merger
 #import glob
-#subprocess.check_output(["pdftk", "files/event*.pdf", "cat", "output", "all-events.pdf"])
-#subprocess.check_output(["pdftk", *sorted(glob.glob("files/event*.pdf")), "cat", "output", "all-events.pdf"])
+#subprocess.check_output(["pdftk", "files/event*.pdf", "cat", "output", output_file])
+#subprocess.check_output(["pdftk", *sorted(glob.glob("files/event*.pdf")), "cat", "output", output_file])
 is_pdf = lambda filename: filename.endswith(".pdf")
-subprocess.check_output(["pdftk", *filter(is_pdf, files_generated), "cat", "output", "all-events.pdf"])
-print("'all-events.pdf' generated")
+subprocess.check_output(["pdftk", *filter(is_pdf, files_generated), "cat", "output", output_file])
+print(f"{output_file!r} generated")
