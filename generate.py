@@ -97,7 +97,9 @@ def format_multi(multi):
     solved = difference + missed
     attempted = solved + missed
     
-    return "{}/{} {}".format(solved, attempted, format_time(timeInSeconds * 100))
+    mins, secs = divmod(timeInSeconds, 60)
+    
+    return "{}/{} {}:{}".format(solved, attempted, mins, secs)
 
 # functions that reads "response"
 def find_name_person(person_id):
