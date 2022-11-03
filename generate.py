@@ -123,7 +123,9 @@ def compute_name_score_for_event(event:dict, n:int):
         if len(last_round['results']) >= n:
             podium = last_round['results'][n-1]
             name = find_name_person(podium['personId'])
-            score = format_time(podium['best'] if 'bf' in event['id'] else podium['average'])
+            score = (str(int(podium['best'])) if 'fm' in event['id'] else
+                     format_time(podium['best']) if 'bf' in event['id'] else
+                     format_time(podium['average']))
             return name, score
     raise ValueError("Unknown score for event")
 
