@@ -270,11 +270,10 @@ if comp_name:
     for nevent, event in enumerate(events_list):
         files_generated += generate_svg_for_event(nevent, event)
 else:
-    for nevent, event_id in enumerate(event_idss):
+    for nevent, event_id in enumerate(event_ids):
         files_generated += generate_svg_for_empty_event(nevent, event_id)
 
-more_event_ids = (len(response['events']) if comp_name else
-                  len(events))
+more_event_ids = len(event_ids)
 
 files_generated += generate_svg_for_newcomers(more_event_ids)
 files_generated += generate_svg_for_youngest(more_event_ids + 1)
