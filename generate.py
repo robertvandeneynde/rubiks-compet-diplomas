@@ -247,8 +247,8 @@ if comp_name:
         events_id = events
     
     if events_id:
-        if not set(events) <= set(comp_event_ids):
-            raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(events)))
+        if not set(events_id) <= set(comp_event_ids):
+            raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(events_id)))
 else:
     if events == 'all' or not events:
         raise Exception("When 'comp_name' is not set, 'events' must be set")
