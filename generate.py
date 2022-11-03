@@ -253,7 +253,7 @@ else:
     if events == 'all' or not events:
         raise Exception("When 'comp_name' is not set, 'events' must be set")
     else:
-        events_ids = events
+        events_id = events
     
 with open(template_file, encoding="UTF-8") as f:
     svg_string = f.read()
