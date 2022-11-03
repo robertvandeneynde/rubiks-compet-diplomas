@@ -4,21 +4,25 @@ import requests
 import sys
 import subprocess
 
-# if True, no requests to the server will be done
-generate_empty = False
+# if True: Names will be filled
+fill_names = True 
 
-# if generate_empty: the list of events that will be generated
-empty_events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+# if set: name of the competition in the url 
+comp_name = 'BelgianNationals2022' # 'SeraingOpen2021'
+
+# if not comp_name: the list of events that will be generated
+events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
 
 # id of the main event (used for newcomer)
 main_event_id = '333'
 
-# if not generate_empty: name of the competition in the url 
-comp_name = 'SeraingOpen2021'
-
 FUNNY_NAMES_MEDALS = ('Sunny Gold', 'Moony Silver', 'Marsy Bronze')
 COLORS_MEDALS = ('ffe858', 'cccccc', 'd45500')    
 COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
+
+# check
+if fill_names and not comp_name:
+    raise Exception("'comp_name' must be set when 'fill_names == True'"
 
 # script
 from collections import namedtuple
@@ -125,7 +129,7 @@ def find_metric_for_event(event_id:str):
 
 def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, newcomerinfo:list=None, diploma_type:'event empty youngest newcomer'):
     for n, m, mv, c, ctext, place in MEDAL_DATA:
-        if generate_empty or diploma_type == 'empty' or diploma_type == 'youngest':
+        if not fill_names or diploma_type == 'empty' or diploma_type == 'youngest':
             name, score = '', ''
         elif diploma_type == 'newcomer':
             try:
@@ -208,7 +212,7 @@ def generate_svg_for_youngest(nevent):
 
 # functions for newcomers
 def get_newcomers_info():
-    if generate_empty:
+    if not fill_names:
         return []
     
     newcomers = []
@@ -221,7 +225,7 @@ def get_newcomers_info():
     return newcomers
 
 # script
-if not generate_empty:
+if comp_name:
     print("Fetching data from wca...")
     response = requests.get(f'https://www.worldcubeassociation.org/api/v0/competitions/{comp_name}/wcif/public').json()
     print("Done !")
@@ -233,17 +237,15 @@ import os
 if not os.path.isdir('files'):
     os.mkdir('files')
 
-if generate_empty:
-    for nevent, event in enumerate(empty_events):
-        generate_svg_for_empty_event(nevent, event)
-else:
+if comp_name:
     for nevent, event in enumerate(response['events']):
         generate_svg_for_event(nevent, event)
-
-if generate_empty:
-    more_events_id = len(empty_events)
 else:
-    more_events_id = len(response['events'])
+    for nevent, event_id in enumerate(events):
+        generate_svg_for_empty_event(nevent, event_id)
+
+more_events_id = (len(response['events']) if comp_name else
+                  len(events))
 
 generate_svg_for_newcomers(more_events_id)
 generate_svg_for_youngest(more_events_id + 1)
