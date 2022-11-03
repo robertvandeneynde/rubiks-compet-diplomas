@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 # if True: Names will be filled
-fill_names = True 
+fill_names = True
 
 # if set: name of the competition in the url 
 comp_name = 'BelgianNationals2022' # 'SeraingOpen2021'
@@ -51,6 +51,8 @@ EVENTS_DATA = [
     EventData('555bf', '5x5x5 Blindfolded', 170, 'time', '5x5x5 Blindfolded'),
     EventData('333mbf', '3x3x3 Multi-Blind', 180, 'multi', '3x3x3 Multi-Blind')]
 
+EVENTS_DICT = {e[0]:e for e in EVENTS_DATA}
+
 MEDAL_DATA = list(zip(
     (1, 2, 3),
     ('Gold', 'Silver', 'Bronze'),
@@ -80,10 +82,10 @@ def find_name_person(person_id):
     raise ValueError(f"Not found person id: {person_id}")
 
 def find_name_event(event_id):
-    for event in EVENTS_DATA:
-        if event[0] == event_id:
-            return event[1]
-    raise ValueError(f"Not found event id: {event_id}")
+    try:
+        return EVENTS_DICT[event_id][1]
+    except KeyError:
+        raise ValueError(f"Not found event id: {event_id}")
 
 def get_main_event():
     for event in response['events']:
