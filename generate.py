@@ -246,7 +246,7 @@ if comp_name:
     else:
         events_id = events
     
-    if events_ids:
+    if events_id:
         if not set(events) <= set(comp_event_ids):
             raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(events)))
 else:
