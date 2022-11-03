@@ -21,6 +21,7 @@ FUNNY_NAMES_MEDALS = ('Sunny Gold', 'Moony Silver', 'Marsy Bronze')
 COLORS_MEDALS = ('ffe858', 'cccccc', 'd45500')    
 COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
 
+template_file = 'drawing.svg'
 output_file = 'all-events.pdf'
 
 # check
@@ -155,7 +156,7 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         
         as_a = 'as a newcomer ' if diploma_type == 'newcomer' else ''
         
-        s2 = (s
+        new_svg_string = (svg_string
             .replace('ffe858', c)
             .replace('{place}', place)
             .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(ctext, mv))
@@ -166,23 +167,23 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
             .replace('{as_a}', as_a)
         )
             
-        t = xmltree.ElementTree(xmltree.fromstring(s2))
+        tree = xmltree.ElementTree(xmltree.fromstring(new_svg_string))
         
-        remove_layer(t, 'Gold') if not m == 'Gold' else None
-        remove_layer(t, 'Silver') if not m == 'Silver' else None
-        remove_layer(t, 'Bronze') if not m == 'Bronze' else None
+        remove_layer(tree, 'Gold') if not m == 'Gold' else None
+        remove_layer(tree, 'Silver') if not m == 'Silver' else None
+        remove_layer(tree, 'Bronze') if not m == 'Bronze' else None
         
-        remove_layer(t, 'Rayons') if m != 'Gold' else None
+        remove_layer(tree, 'Rayons') if m != 'Gold' else None
         
-        remove_layer(t, 'Young text') if diploma_type != 'youngest' else None
-        remove_layer(t, 'Below text') if diploma_type == 'youngest' else None
+        remove_layer(tree, 'Young text') if diploma_type != 'youngest' else None
+        remove_layer(tree, 'Below text') if diploma_type == 'youngest' else None
         
         diploma_name = ('youngest' if diploma_type == 'youngest' else
                         'newcomer' if diploma_type == 'newcomer' else
                         event_id)
         
         file_name = 'files/event-{:02}-{}-{}'.format(diploma_number + 1, n, diploma_name)
-        t.write(file_name + '.svg', encoding="utf-8")
+        tree.write(file_name + '.svg', encoding="utf-8")
         
         # call inkscape --export-type=pdf "$f"
         #subprocess.check_output(["inkscape", "--export-type=pdf", file_name + '.svg'])
@@ -252,8 +253,8 @@ else:
     else:
         events_ids = events
     
-with open('drawing.svg',encoding="UTF-8") as f:
-    s = f.read()
+with open(template_file, encoding="UTF-8") as f:
+    svg_string = f.read()
 
 import os
 if not os.path.isdir('files'):
