@@ -10,8 +10,9 @@ fill_names = True
 # if set: name of the competition in the url 
 comp_name = 'BelgianNationals2022' # 'SeraingOpen2021'
 
-# if not comp_name: the list of events that will be generated
-events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+# if set: the list of events that will be generated
+# if not set or 'all': all the events of 'comp_name' will be used
+events = None # ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
 
 # id of the main event (used for newcomer)
 main_event_id = '333'
@@ -230,9 +231,24 @@ def get_newcomers_info():
 
 # script
 if comp_name:
-    print("Fetching data from wca for competition {comp_name!r}...")
+    print(f"Fetching data from wca for competition {comp_name!r}...")
     response = requests.get(f'https://www.worldcubeassociation.org/api/v0/competitions/{comp_name}/wcif/public').json()
     print("Done !")
+    comp_event_ids = [event['id'] for event in response['events']]
+
+    if events == 'all' or not events:
+        events_id = comp_event_ids
+    else:
+        events_id = events
+    
+    if events_ids:
+        if not set(events) <= set(comp_event_ids):
+            raise Exception('Those events do not exist in the competition: {}'.format(set(comp_event_ids) - set(events)))
+else:
+    if events == 'all' or not events:
+        raise Exception("When 'comp_name' is not set, 'events' must be set")
+    else:
+        events_ids = events
     
 with open('drawing.svg',encoding="UTF-8") as f:
     s = f.read()
@@ -241,24 +257,26 @@ import os
 if not os.path.isdir('files'):
     os.mkdir('files')
 
-file_generated = []
+files_generated = []
 if comp_name:
-    for nevent, event in enumerate(response['events']):
-        file_generated += generate_svg_for_event(nevent, event)
+    events_dict = {event['id']: event for event in response['events']}
+    events_list = [events_dict[event_id] for event_id in event_ids]
+    for nevent, event in enumerate(events_list):
+        files_generated += generate_svg_for_event(nevent, event)
 else:
-    for nevent, event_id in enumerate(events):
-        file_generated += generate_svg_for_empty_event(nevent, event_id)
+    for nevent, event_id in enumerate(events_ids):
+        files_generated += generate_svg_for_empty_event(nevent, event_id)
 
 more_events_id = (len(response['events']) if comp_name else
                   len(events))
 
-generate_svg_for_newcomers(more_events_id)
-generate_svg_for_youngest(more_events_id + 1)
+files_generated += generate_svg_for_newcomers(more_events_id)
+files_generated += generate_svg_for_youngest(more_events_id + 1)
 
 #call pdf merger
 #import glob
 #subprocess.check_output(["pdftk", "files/event*.pdf", "cat", "output", "all-events.pdf"])
 #subprocess.check_output(["pdftk", *sorted(glob.glob("files/event*.pdf")), "cat", "output", "all-events.pdf"])
 is_pdf = lambda filename: filename.endswith(".pdf")
-subprocess.check_output(["pdftk", *sorted(filter(is_pdf, files_generated)), "cat", "output", "all-events.pdf"])
+subprocess.check_output(["pdftk", *filter(is_pdf, files_generated), "cat", "output", "all-events.pdf"])
 print("'all-events.pdf' generated")
