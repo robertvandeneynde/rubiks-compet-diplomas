@@ -223,8 +223,8 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         tree.write(file_name + '.svg', encoding="utf-8")
         
         # call inkscape --export-type=pdf "$f"
-        #subprocess.check_output(["inkscape", "--export-type=pdf", file_name + '.svg'])
-        subprocess.check_output(["inkscape", f"--file={file_name}.svg", "--without-gui", f"--export-pdf={file_name}.pdf"])
+        subprocess.check_output(["inkscape", "--export-type=pdf", file_name + '.svg'])
+        #subprocess.check_output(["inkscape", f"--file={file_name}.svg", "--without-gui", f"--export-pdf={file_name}.pdf"])
         
         print(f"{file_name!r} generated")
         
