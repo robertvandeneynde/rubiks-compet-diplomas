@@ -22,7 +22,7 @@ COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
 
 # check
 if fill_names and not comp_name:
-    raise Exception("'comp_name' must be set when 'fill_names == True'"
+    raise Exception("'comp_name' must be set when 'fill_names == True'")
 
 # script
 from collections import namedtuple
