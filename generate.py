@@ -121,6 +121,12 @@ def get_main_event():
             return event
     raise ValueError(f"No main event found: {main_event_id}")
 
+class SvgLayerNotFound(ValueError):
+    pass
+
+class SvgLayerMultiFound(ValueError):
+    pass
+
 # svg modification functions
 def remove_layer(tree, name):
     layers = [
@@ -129,9 +135,9 @@ def remove_layer(tree, name):
         if name == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}label')]
     
     if len(layers) == 0:
-        raise ValueError(f"Layer {name!r} not found")
+        raise SvgLayerNotFound(f"Layer {name!r} not found")
     if len(layers) > 1:
-        raise ValueError(f"Layer {name!r} is duplicate, please rename")
+        raise SvgLayerMultiFound(f"Layer {name!r} is duplicate, please rename")
     
     layer = layers[0]
     layer.attrib['style'] = 'display:none'
