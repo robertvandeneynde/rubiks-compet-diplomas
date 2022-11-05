@@ -141,6 +141,10 @@ def remove_layer(tree, name):
     layer = find_layer(tree.getroot(), name)
     layer.attrib['style'] = 'display:none'
 
+def show_layer(tree, name):
+    layer = find_layer(tree.getroot(), name)
+    layer.attrib['style'] = 'display:inline'
+
 # functions related to a event(dict)
 def get_main_averages(event:dict, personId):
     return sorted(
@@ -208,19 +212,27 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
             
         tree = xmltree.ElementTree(xmltree.fromstring(new_svg_string))
         
-        remove_layer(tree, 'Gold') if not m == 'Gold' else None
-        remove_layer(tree, 'Silver') if not m == 'Silver' else None
-        remove_layer(tree, 'Bronze') if not m == 'Bronze' else None
+        for layer_name in ('Gold', 'Silver', 'Bronze'):
+            if m == layer_name:
+                show_layer(tree, layer_name)
+            else:
+                remove_layer(tree, layer_name)
         
-        remove_layer(tree, 'Young text') if diploma_type != 'youngest' else None
-        remove_layer(tree, 'Below text') if diploma_type == 'youngest' else None
+        if diploma_type == 'youngest':
+            show_layer(tree, 'Young text')
+            remove_layer(tree, 'Below text')
+        else:
+            remove_layer(tree, 'Young text')
+            show_layer(tree, 'Below text')
         
         for layer_id in EVENTS_DICT:
-            if event_id != layer_id:
-                try:
+            try:
+                if event_id == layer_id:
+                    show_layer(tree, layer_id)
+                else:
                     remove_layer(tree, layer_id)
-                except SvgLayerNotFound:
-                    pass
+            except SvgLayerNotFound:
+                pass
         
         diploma_name = ('youngest' if diploma_type == 'youngest' else
                         'newcomer' if diploma_type == 'newcomer' else

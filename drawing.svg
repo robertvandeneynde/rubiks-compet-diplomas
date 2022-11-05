@@ -362,7 +362,7 @@
    inkscape:groupmode="layer"
    id="layer7"
    inkscape:label="Silver"
-   style="display:inline"><g
+   style="display:none"><g
      id="g653-3"
      inkscape:label="Cube"
      style="display:inline"><path
@@ -512,7 +512,7 @@
    inkscape:groupmode="layer"
    id="layer8"
    inkscape:label="Gold"
-   style="display:inline"><g
+   style="display:none"><g
      id="g1997"
      clip-path="none"
      style="display:inline;stroke:#ffe680"
@@ -883,9 +883,9 @@
    style="font-style:normal;font-weight:normal;font-size:26.8952px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect2671);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
      x="675"
      y="384.07956"
-     id="tspan4754"><tspan
+     id="tspan4980"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan4752">{name}</tspan></tspan></text>
+       id="tspan4978">{name}</tspan></tspan></text>
 
 
 <text
@@ -897,9 +897,9 @@
    transform="translate(-454.38231,-157.00759)"><tspan
      x="675"
      y="366.96277"
-     id="tspan4758"><tspan
+     id="tspan4984"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan4756">{result}</tspan></tspan></text>
+       id="tspan4982">{result}</tspan></tspan></text>
 
 </g><g
    inkscape:groupmode="layer"
@@ -938,7 +938,7 @@
    inkscape:label="Young text"
    id="g2648"
    inkscape:groupmode="layer"
-   style="display:inline"><text
+   style="display:none"><text
    id="text2646"
    y="152.49911"
    x="178.84692"
