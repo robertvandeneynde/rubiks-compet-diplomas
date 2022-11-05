@@ -21,6 +21,9 @@ main_event_id = '333'
 template_file = 'drawing.svg'
 output_file = 'all-events.pdf'
 
+generate_youngest = True
+generate_newcomer = True
+
 # check
 if fill_names and not comp_name:
     raise Exception("'comp_name' must be set when 'fill_names == True'")
@@ -313,8 +316,13 @@ else:
 
 more_event_ids = len(event_ids)
 
-files_generated += generate_svg_for_newcomers(more_event_ids)
-files_generated += generate_svg_for_youngest(more_event_ids + 1)
+if generate_newcomer:
+    files_generated += generate_svg_for_newcomers(more_event_ids)
+    more_event_ids += 1
+
+if generate_youngest:
+    files_generated += generate_svg_for_youngest(more_event_ids)
+    more_event_ids += 1
 
 #call pdf merger
 #import glob
