@@ -131,6 +131,8 @@ def find_layer(element, name):
         raise SvgLayerNotFound(f"Layer {name!r} not found")
     if len(layers) > 1:
         raise SvgLayerMultiFound(f"Layer {name!r} is duplicate, please rename")
+    
+    return layers[0]
 
 def remove_layer(tree, name):
     layer = find_layer(tree.getroot(), name)
@@ -213,7 +215,7 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         for layer_id in EVENTS_DICT:
             if event_id != layer_id:
                 try:
-                    remove_layer(layer_id)
+                    remove_layer(tree, layer_id)
                 except SvgLayerNotFound:
                     pass
         
