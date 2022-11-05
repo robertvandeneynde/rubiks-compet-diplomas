@@ -31,26 +31,26 @@ if fill_names and not comp_name:
 
 # script
 from collections import namedtuple
-EventData = namedtuple("EventData", "id name number method_of_ranking name2")
+EventData = namedtuple("EventData", "id name ranking_method")
 
 EVENTS_DATA = [
-    EventData('333', '3x3x3 Cube', 10, 'time', '3x3x3 Cube'),
-    EventData('222', '2x2x2 Cube', 20, 'time', '2x2x2 Cube'),
-    EventData('444', '4x4x4 Cube', 30, 'time', '4x4x4 Cube'),
-    EventData('555', '5x5x5 Cube', 40, 'time', '5x5x5 Cube'),
-    EventData('666', '6x6x6 Cube', 50, 'time', '6x6x6 Cube'),
-    EventData('777', '7x7x7 Cube', 60, 'time', '7x7x7 Cube'),
-    EventData('333bf', '3x3x3 Blindfolded', 70, 'time', '3x3x3 Blindfolded'),
-    EventData('333fm', '3x3x3 Fewest Moves', 80, 'number', '3x3x3 Fewest Moves'),
-    EventData('333oh', '3x3x3 One-Handed', 90, 'time', '3x3x3 One-Handed'),
-    EventData('clock', 'Clock', 110, 'time', 'Clock'),
-    EventData('minx', 'Megaminx', 120, 'time', 'Megaminx'),
-    EventData('pyram', 'Pyraminx', 130, 'time', 'Pyraminx'),
-    EventData('skewb', 'Skewb', 140, 'time', 'Skewb'),
-    EventData('sq1', 'Square-1', 150, 'time', 'Square-1'),
-    EventData('444bf', '4x4x4 Blindfolded', 160, 'time', '4x4x4 Blindfolded'),
-    EventData('555bf', '5x5x5 Blindfolded', 170, 'time', '5x5x5 Blindfolded'),
-    EventData('333mbf', '3x3x3 Multi-Blind', 180, 'multi', '3x3x3 Multi-Blind')]
+    EventData('333',    '3x3x3 Cube',         'time'),
+    EventData('222',    '2x2x2 Cube',         'time'),
+    EventData('444',    '4x4x4 Cube',         'time'),
+    EventData('555',    '5x5x5 Cube',         'time'),
+    EventData('666',    '6x6x6 Cube',         'time'),
+    EventData('777',    '7x7x7 Cube',         'time'),
+    EventData('333bf',  '3x3x3 Blindfolded',  'time'),
+    EventData('333fm',  '3x3x3 Fewest Moves', 'number'),
+    EventData('333oh',  '3x3x3 One-Handed',   'time'),
+    EventData('clock',  'Clock',              'time'),
+    EventData('minx',   'Megaminx',           'time'),
+    EventData('pyram',  'Pyraminx',           'time'),
+    EventData('skewb',  'Skewb',              'time'),
+    EventData('sq1',    'Square-1',           'time'),
+    EventData('444bf',  '4x4x4 Blindfolded',  'time'),
+    EventData('555bf',  '5x5x5 Blindfolded',  'time'),
+    EventData('333mbf', '3x3x3 Multi-Blind',  'multi')]
 
 EVENTS_DICT = {e[0]:e for e in EVENTS_DATA}
 
@@ -128,9 +128,9 @@ class SvgLayerMultiFound(ValueError):
     pass
 
 # svg modification functions
-def remove_layer(tree, name):
+def find_layer(element, name):
     layers = [
-        x for x in tree.getroot().findall('./')
+        x for x in element.findall('./')
         if 'layer' == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}groupmode')
         if name == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}label')]
     
@@ -138,8 +138,9 @@ def remove_layer(tree, name):
         raise SvgLayerNotFound(f"Layer {name!r} not found")
     if len(layers) > 1:
         raise SvgLayerMultiFound(f"Layer {name!r} is duplicate, please rename")
-    
-    layer = layers[0]
+
+def remove_layer(tree, name):
+    layer = find_layer(tree.getroot(), name)
     layer.attrib['style'] = 'display:none'
 
 # functions related to a event(dict)
@@ -215,6 +216,13 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         
         remove_layer(tree, 'Young text') if diploma_type != 'youngest' else None
         remove_layer(tree, 'Below text') if diploma_type == 'youngest' else None
+        
+        for layer_id in EVENTS_DICT:
+            if event_id != layer_id:
+                try:
+                    remove_layer(layer_id)
+                except SvgLayerNotFound:
+                    pass
         
         diploma_name = ('youngest' if diploma_type == 'youngest' else
                         'newcomer' if diploma_type == 'newcomer' else
