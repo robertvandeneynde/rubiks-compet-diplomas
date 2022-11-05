@@ -211,8 +211,6 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         remove_layer(tree, 'Silver') if not m == 'Silver' else None
         remove_layer(tree, 'Bronze') if not m == 'Bronze' else None
         
-        remove_layer(tree, 'Rays') if m != 'Gold' else None
-        
         remove_layer(tree, 'Young text') if diploma_type != 'youngest' else None
         remove_layer(tree, 'Below text') if diploma_type == 'youngest' else None
         
