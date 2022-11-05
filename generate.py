@@ -128,6 +128,7 @@ def get_main_event():
 def remove_layer(tree, name):
     layers = [
         x for x in tree.getroot().findall('./')
+        if 'layer' == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}groupmode')
         if name == x.attrib.get('{http://www.inkscape.org/namespaces/inkscape}label')]
     
     if len(layers) == 0:
