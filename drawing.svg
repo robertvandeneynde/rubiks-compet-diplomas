@@ -59,7 +59,7 @@
    inkscape:cx="446"
    inkscape:cy="386.5"
    inkscape:document-units="mm"
-   inkscape:current-layer="layer9"
+   inkscape:current-layer="layer8"
    showgrid="false"
    inkscape:window-width="1920"
    inkscape:window-height="995"
@@ -777,17 +777,7 @@
        style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
        id="tspan2317-8">Here is your <tspan
    style="fill:#ffcd08;fill-opacity:1"
-   id="tspan2413">Gold</tspan> cube !</tspan></text><text
-     xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:4.23332px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.3175px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="155.0425"
-     y="220.0365"
-     id="text2411"><tspan
-       sodipodi:role="line"
-       id="tspan2409"
-       style="stroke-width:0.3175px"
-       x="155.0425"
-       y="220.0365">'ffcd08', 'cccccc', 'd45500'</tspan></text></g><g
+   id="tspan2413">Gold</tspan> cube !</tspan></text></g><g
    inkscape:groupmode="layer"
    id="layer2"
    inkscape:label="Squares"
@@ -893,9 +883,9 @@
    style="font-style:normal;font-weight:normal;font-size:26.8952px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect2671);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
      x="675"
      y="384.07956"
-     id="tspan4528"><tspan
+     id="tspan4754"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan4526">{name}</tspan></tspan></text>
+       id="tspan4752">{name}</tspan></tspan></text>
 
 
 <text
@@ -907,9 +897,9 @@
    transform="translate(-454.38231,-157.00759)"><tspan
      x="675"
      y="366.96277"
-     id="tspan4532"><tspan
+     id="tspan4758"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan4530">{result}</tspan></tspan></text>
+       id="tspan4756">{result}</tspan></tspan></text>
 
 </g><g
    inkscape:groupmode="layer"
