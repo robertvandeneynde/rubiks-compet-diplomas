@@ -59,7 +59,7 @@
    inkscape:cx="476.5"
    inkscape:cy="386.5"
    inkscape:document-units="mm"
-   inkscape:current-layer="svg8"
+   inkscape:current-layer="layer9"
    showgrid="false"
    inkscape:window-width="1920"
    inkscape:window-height="995"
@@ -148,17 +148,11 @@
    inkscape:groupmode="Layer"
    inkscape:label="333"
    id="g18" /><g
-   inkscape:groupmode="layer"
-   id="layer5"
-   inkscape:label="Back"
-   style="display:inline"
-   sodipodi:insensitive="true" /><g
    inkscape:label="Logos"
    inkscape:groupmode="layer"
    id="layer1"
    transform="translate(0,-87)"
-   style="display:inline"
-   sodipodi:insensitive="true"><g
+   style="display:inline"><g
      transform="matrix(0.16128477,0,0,0.16128477,-63.828635,172.19162)"
      id="layer1-1"
      inkscape:label="Layer 1"
@@ -218,8 +212,7 @@
    inkscape:groupmode="layer"
    id="layer9"
    inkscape:label="Bronze"
-   style="display:inline"
-   sodipodi:insensitive="true"><g
+   style="display:inline"><g
      id="g653-3-2"
      inkscape:label="Cube"
      style="display:inline"><path
@@ -352,12 +345,21 @@
        style="display:inline;fill:#d45500;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.243766px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 123.10278,81.736185 h 23.57866 l -14.34188,8.590581 h -23.713 z"
        id="path1462-7-3-9-1"
-       inkscape:connector-curvature="0" /></g></g><g
+       inkscape:connector-curvature="0" /></g><text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:8.53922px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="34.87204"
+     y="242.56123"
+     id="text2017-5-0-7"><tspan
+       sodipodi:role="line"
+       x="34.87204"
+       y="242.56123"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
+       id="tspan2317-8-5">Here is your Bronze cube !</tspan></text></g><g
    inkscape:groupmode="layer"
    id="layer7"
    inkscape:label="Silver"
-   style="display:inline"
-   sodipodi:insensitive="true"><g
+   style="display:inline"><g
      id="g653-3"
      inkscape:label="Cube"
      style="display:inline"><path
@@ -490,12 +492,21 @@
        style="display:inline;fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.243766px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 123.10278,81.736185 h 23.57866 l -14.34188,8.590581 h -23.713 z"
        id="path1462-7-3-9"
-       inkscape:connector-curvature="0" /></g></g><g
+       inkscape:connector-curvature="0" /></g><text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:8.53922px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="34.87204"
+     y="242.56123"
+     id="text2017-5-0-3"><tspan
+       sodipodi:role="line"
+       x="34.87204"
+       y="242.56123"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
+       id="tspan2317-8-6">Here is your Silver cube !</tspan></text></g><g
    inkscape:groupmode="layer"
    id="layer8"
    inkscape:label="Gold"
-   style="display:inline"
-   sodipodi:insensitive="true"><g
+   style="display:inline"><g
      id="g1997"
      clip-path="none"
      style="display:inline;stroke:#ffe680"
@@ -747,12 +758,21 @@
        style="display:inline;fill:#ffe858;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.243766px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 123.10278,81.736185 h 23.57866 l -14.34188,8.590581 h -23.713 z"
        id="path1462-7-3"
-       inkscape:connector-curvature="0" /></g></g><g
+       inkscape:connector-curvature="0" /></g><text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:8.53922px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="34.87204"
+     y="242.56123"
+     id="text2017-5-0"><tspan
+       sodipodi:role="line"
+       x="34.87204"
+       y="242.56123"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
+       id="tspan2317-8">Here is your Gold cube !</tspan></text></g><g
    inkscape:groupmode="layer"
    id="layer2"
    inkscape:label="Squares"
-   style="display:inline"
-   sodipodi:insensitive="true"><text
+   style="display:inline"><text
    xml:space="preserve"
    style="font-style:normal;font-weight:normal;font-size:8.255px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.291321px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
    x="181.71193"
@@ -815,17 +835,7 @@
    id="text2017-1" />
 
 
-<text
-   xml:space="preserve"
-   style="font-style:normal;font-weight:normal;font-size:8.53922px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-   x="34.87204"
-   y="242.56123"
-   id="text2017-5-0"><tspan
-     sodipodi:role="line"
-     x="34.87204"
-     y="242.56123"
-     style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Italic';text-align:start;text-anchor:start;stroke-width:0.264583px"
-     id="tspan2317-8">Here is your {medal} cube !</tspan></text>
+
 
 
 <text
@@ -864,9 +874,9 @@
    style="font-style:normal;font-weight:normal;font-size:26.8952px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect2671);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
      x="675"
      y="384.07956"
-     id="tspan776"><tspan
+     id="tspan2403"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan774">{name}</tspan></tspan></text>
+       id="tspan2401">{name}</tspan></tspan></text>
 
 
 <text
@@ -878,16 +888,15 @@
    transform="translate(-454.38231,-157.00759)"><tspan
      x="675"
      y="366.96277"
-     id="tspan780"><tspan
+     id="tspan2407"><tspan
        style="font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       id="tspan778">{result}</tspan></tspan></text>
+       id="tspan2405">{result}</tspan></tspan></text>
 
 </g><g
    inkscape:groupmode="layer"
    id="layer6"
    inkscape:label="Below text"
-   style="display:inline"
-   sodipodi:insensitive="true"><text
+   style="display:inline"><text
    xml:space="preserve"
    style="font-style:normal;font-weight:normal;font-size:8.255px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
    x="178.47247"
@@ -920,8 +929,7 @@
    inkscape:label="Young text"
    id="g2648"
    inkscape:groupmode="layer"
-   style="display:inline"
-   sodipodi:insensitive="true"><text
+   style="display:inline"><text
    id="text2646"
    y="152.49911"
    x="178.84692"
@@ -955,8 +963,7 @@
    inkscape:groupmode="layer"
    id="layer3"
    inkscape:label="Borders"
-   style="display:none"
-   sodipodi:insensitive="true"><path
+   style="display:none"><path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="m 24.621027,115.3209 v 85.79352"
      id="path837"

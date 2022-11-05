@@ -18,10 +18,6 @@ events = 'all'
 # id of the main event (used for newcomer)
 main_event_id = '333'
 
-FUNNY_NAMES_MEDALS = ('Sunny Gold', 'Moony Silver', 'Marsy Bronze')
-COLORS_MEDALS = ('ffe858', 'cccccc', 'd45500')    
-COLORS_MEDALS_TEXT = ('ffcd08', 'cccccc', 'd45500')
-
 template_file = 'drawing.svg'
 output_file = 'all-events.pdf'
 
@@ -57,9 +53,6 @@ EVENTS_DICT = {e[0]:e for e in EVENTS_DATA}
 MEDAL_DATA = list(zip(
     (1, 2, 3),
     ('Gold', 'Silver', 'Bronze'),
-    FUNNY_NAMES_MEDALS,
-    COLORS_MEDALS,
-    COLORS_MEDALS_TEXT,
     ('First', 'Second', 'Third')))    
 
 # general functions
@@ -121,13 +114,13 @@ def get_main_event():
             return event
     raise ValueError(f"No main event found: {main_event_id}")
 
+# svg modification functions
 class SvgLayerNotFound(ValueError):
     pass
 
 class SvgLayerMultiFound(ValueError):
     pass
 
-# svg modification functions
 def find_layer(element, name):
     layers = [
         x for x in element.findall('./')
@@ -174,7 +167,7 @@ def find_metric_for_event(event_id:str):
 
 def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, newcomerinfo:list=None, diploma_type:'event empty youngest newcomer'):
     files_generated = []
-    for n, m, mv, c, ctext, place in MEDAL_DATA:
+    for n, m, place in MEDAL_DATA:
         if not fill_names or diploma_type == 'empty' or diploma_type == 'youngest':
             name, score = '', ''
         elif diploma_type == 'newcomer':
@@ -200,7 +193,7 @@ def generate_diploma(*, diploma_number:int, event_id:str=None, event:dict=None, 
         
         new_svg_string = (svg_string
             .replace('{place}', place)
-            .replace('{medal}', '<tspan style="fill:#{}">{}</tspan>'.format(ctext, mv))
+            .replace('{medal}', m)
             .replace('{compet}', compet)
             .replace('{compet_metric}', metric)
             .replace('{name}', name)
