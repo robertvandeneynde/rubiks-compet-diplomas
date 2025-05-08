@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 import xml.etree.ElementTree as xmltree
-import requests
 import sys
 import subprocess
 
 # if True: Names will be filled
-fill_names = True
+fill_names = False
 
 # if set: name of the competition in the url 
-comp_name = "GanshorenSundayOpen2022" # 'BelgianNationals2022' # 'SeraingOpen2021'
+comp_name = None # "GanshorenSundayOpen2022" # 'BelgianNationals2022' # 'SeraingOpen2021'
 
 # if set: the list of events that will be generated
 # if not set or 'all': all the events of 'comp_name' will be used
-#events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
-events = 'all'
+#events = 'all'
+#events = ['333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1', '444bf', '555bf', '333mbf']
+events = ['444', '555', '666', '777', 'minx', '333fm', '333bf', '444bf', '555bf', '333mbf']
 
-# id of the main event (used for newcomer)
+# id of the main event (used for newcomer & youngest)
 main_event_id = '333'
 
 template_file = 'drawing.svg'
 output_file = 'all-events.pdf'
 
-generate_youngest = True
-generate_newcomer = True
+generate_youngest = False
+generate_newcomer = False
 
 # check
 if fill_names and not comp_name:
@@ -265,13 +265,13 @@ def generate_svg_for_empty_event(nevent, event_id:str):
         
 def generate_svg_for_newcomers(nevent):
     return generate_diploma(diploma_number=nevent,
-                            event_id='333',
+                            event_id=main_event_id,
                             diploma_type='newcomer',
                             newcomerinfo=get_newcomers_info())
 
 def generate_svg_for_youngest(nevent):
     return generate_diploma(diploma_number=nevent,
-                            event_id='333',
+                            event_id=main_event_id,
                             diploma_type='youngest')
 
 # functions for newcomers
@@ -290,6 +290,7 @@ def get_newcomers_info():
 
 # script
 if comp_name:
+    import requests
     print(f"Fetching data from wca for competition {comp_name!r}...")
     response = requests.get(f'https://www.worldcubeassociation.org/api/v0/competitions/{comp_name}/wcif/public').json()
     print("Done !")
